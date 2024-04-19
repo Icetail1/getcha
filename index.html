@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我永远喜欢ice抽奖！</title>
+<title>倒计时和截图示例</title>
 <style>
 .hidden {
     display: none;
@@ -19,7 +19,7 @@
     <div id="screenshotPreview"></div>
 </div>
 
-<iframe id="embeddedFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
+<iframe id="embeddedFrame" src="your_embedded_page_url" width="800" height="600"></iframe>
 
 <script>
 // 获取倒计时元素和开始按钮
@@ -58,11 +58,18 @@ function startCountdown() {
     }, 1000);
 }
 
-// 监听截图按钮点击事件
-const screenshotButton = document.getElementById('screenshotButton');
-screenshotButton.addEventListener('click', () => {
-    takeScreenshot();
-});
+// 等待 iframe 加载完成后执行操作
+const embeddedFrame = document.getElementById('embeddedFrame');
+embeddedFrame.onload = function() {
+    // 获取 iframe 中的文档对象
+    const embeddedDocument = embeddedFrame.contentDocument || embeddedFrame.contentWindow.document;
+
+    // 监听截图按钮点击事件
+    const screenshotButton = embeddedDocument.getElementById('screenshotButton');
+    screenshotButton.addEventListener('click', () => {
+        takeScreenshot();
+    });
+};
 
 // 定义截图函数
 function takeScreenshot() {
@@ -71,7 +78,7 @@ function takeScreenshot() {
     
     // 创建一个图片元素，用于显示截图
     const screenshotImg = document.createElement('img');
-    screenshotImg.src = 'your_screenshot_url'; // 替换为实际的截图URL
+    screenshotImg.src = 'img'; // 替换为实际的截图URL
     screenshotImg.alt = '截图';
 
     // 将截图显示在页面中
