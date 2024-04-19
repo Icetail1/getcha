@@ -1,42 +1,36 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>视频播放和截图示例</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频截图</title>
 </head>
 <body>
-<input type="url" id="videoUrlInput" placeholder="输入视频文件URL">
-<button id="playButton">播放</button>
-<button id="captureButton">截图</button>
-<video id="videoPlayer" controls></video>
-<canvas id="canvas" style="display: none;"></canvas>
+    <iframe id="videoPlayer" src="https://b23.tv/iH6ZT9N" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    <br>
+    <button id="screenshotButton">截图</button>
+    <br>
+    <canvas id="screenshotCanvas" width="560" height="315" style="display: none;"></canvas>
 
-<script>
-const videoUrlInput = document.getElementById('videoUrlInput');
-const playButton = document.getElementById('playButton');
-const captureButton = document.getElementById('captureButton');
-const videoPlayer = document.getElementById('videoPlayer');
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+        const screenshotButton = document.getElementById('screenshotButton');
+        const screenshotCanvas = document.getElementById('screenshotCanvas');
+        const canvasContext = screenshotCanvas.getContext('2d');
 
-playButton.addEventListener('click', function() {
-    const videoUrl = videoUrlInput.value.trim();
-    if (videoUrl) {
-        videoPlayer.src = videoUrl;
-        videoPlayer.play();
-    } else {
-        alert('请输入有效的视频文件URL');
-    }
-});
-
-captureButton.addEventListener('click', function() {
-    context.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
-    const imgData = canvas.toDataURL('image/png');
-    const img = document.createElement('img');
-    img.src = imgData;
-    document.body.appendChild(img);
-});
-</script>
+        // 截图按钮点击事件
+        screenshotButton.addEventListener('click', () => {
+            // 将视频帧绘制到画布上
+            canvasContext.drawImage(videoPlayer, 0, 0, screenshotCanvas.width, screenshotCanvas.height);
+            // 将画布内容显示在页面上
+            screenshotCanvas.style.display = 'block';
+            // 可以选择将截图下载为图片
+            // const imageData = screenshotCanvas.toDataURL('image/png');
+            // const downloadLink = document.createElement('a');
+            // downloadLink.href = imageData;
+            // downloadLink.download = 'screenshot.png';
+            // downloadLink.click();
+        });
+    </script>
 </body>
 </html>
