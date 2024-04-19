@@ -11,7 +11,7 @@
 </style>
 </head>
 <body>
-<div id="countdown">倒计时: 10 秒</div>
+<div id="countdown" class="hidden">倒计时: 10 秒</div>
 <button id="startButton">开始倒计时</button>
 
 <div id="screenshotContainer" class="hidden">
@@ -59,21 +59,23 @@ function startCountdown() {
 }
 
 // 监听截图按钮点击事件
-const embeddedFrame = document.getElementById('embeddedFrame');
-embeddedFrame.onload = function() {
-    const screenshotButton = embeddedFrame.contentDocument.getElementById('screenshotButton');
-    screenshotButton.addEventListener('click', () => {
-        takeScreenshot();
-    });
-};
+const screenshotButton = document.getElementById('screenshotButton');
+screenshotButton.addEventListener('click', () => {
+    takeScreenshot();
+});
 
 // 定义截图函数
 function takeScreenshot() {
-    // 这里是截图的逻辑，可以使用html2canvas库或其他截图技术
-    // 这里简单示例一个警告框表示截图成功
+    // 这里简单示例一个截图成功的警告框
     alert('截图成功！');
-    // 在页面下方显示截图（这里假设截图的内容是一个图片URL）
-    screenshotPreview.innerHTML = '<img src="your_screenshot_url" alt="截图">';
+    
+    // 创建一个图片元素，用于显示截图
+    const screenshotImg = document.createElement('img');
+    screenshotImg.src = 'your_screenshot_url'; // 替换为实际的截图URL
+    screenshotImg.alt = '截图';
+
+    // 将截图显示在页面中
+    screenshotPreview.appendChild(screenshotImg);
 }
 </script>
 </body>
