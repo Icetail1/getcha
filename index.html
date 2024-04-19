@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>倒计时和截图示例</title>
+<title>截图示例</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <style>
 .hidden {
     display: none;
@@ -11,78 +12,40 @@
 </style>
 </head>
 <body>
-<div id="countdown" class="hidden">倒计时: 10 秒</div>
-<button id="startButton">开始倒计时</button>
+<iframe id="embeddedFrame" src="https://b23.tv/iH6ZT9" width="800" height="600"></iframe>
+
+<button id="screenshotButton">截图</button>
 
 <div id="screenshotContainer" class="hidden">
     <h2>截图结果</h2>
     <div id="screenshotPreview"></div>
 </div>
 
-<iframe id="embeddedFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
-
 <script>
-// 获取倒计时元素和开始按钮
-const countdownElement = document.getElementById('countdown');
-const startButton = document.getElementById('startButton');
+// 获取截图按钮和截图容器
+const screenshotButton = document.getElementById('screenshotButton');
 const screenshotContainer = document.getElementById('screenshotContainer');
 const screenshotPreview = document.getElementById('screenshotPreview');
 
-// 监听开始按钮点击事件
-startButton.addEventListener('click', () => {
-    // 隐藏开始按钮
-    startButton.classList.add('hidden');
-    // 显示倒计时和截图容器
-    countdownElement.classList.remove('hidden');
-    screenshotContainer.classList.remove('hidden');
-
-    // 开始倒计时
-    startCountdown();
+// 监听截图按钮点击事件
+screenshotButton.addEventListener('click', () => {
+    takeScreenshot();
 });
-
-// 定义倒计时函数
-function startCountdown() {
-    let countdownTime = 10; // 10秒倒计时
-    const countdownInterval = setInterval(() => {
-        countdownTime--;
-        countdownElement.textContent = `倒计时: ${countdownTime} 秒`;
-
-        if (countdownTime === 0) {
-            clearInterval(countdownInterval);
-
-            // 触发 iframe 中的截图按钮点击事件
-            const embeddedFrame = document.getElementById('embeddedFrame');
-            const screenshotButton = embeddedFrame.contentDocument.getElementById('screenshotButton');
-            screenshotButton.click();
-        }
-    }, 1000);
-}
-
-// 等待 iframe 加载完成后执行操作
-const embeddedFrame = document.getElementById('embeddedFrame');
-embeddedFrame.onload = function() {
-    // 获取 iframe 中的文档对象
-    const embeddedDocument = embeddedFrame.contentDocument || embeddedFrame.contentWindow.document;
-
-    // 监听截图按钮点击事件
-    const screenshotButton = embeddedDocument.getElementById('screenshotButton');
-    screenshotButton.addEventListener('click', () => {
-        takeScreenshot();
-    });
-};
 
 // 定义截图函数
 function takeScreenshot() {
-    // 这里简单示例一个截图成功的警告框
-    alert('截图成功！');
-    
-    // 创建一个图片元素，用于显示截图
-    const screenshotImg = document.createElement('img');
-    screenshotImg.src = 'img'; // 替换为实际的截图URL
-    screenshotImg.alt = '截图';
+    // 获取嵌入的 iframe 元素
+    const embeddedFrame = document.getElementById('embeddedFrame');
 
-    // 将截图显示在页面中
-    screenshotPreview.appendChild(screenshotImg);
+    // 使用 html2canvas 截取 iframe 中的内容
+    html2canvas(embeddedFrame).then(canvas => {
+        // 将截图显示在页面中
+        const screenshotImg = document.createElement('img');
+        screenshotImg.src = canvas.toDataURL(); // 将 canvas 转换为图片数据URL
+        screenshotImg.alt = '截图';
+        screenshotPreview.appendChild(screenshotImg);
+        screenshotContainer.classList.remove('hidden');
+    });
 }
 </script>
 </body>
