@@ -6,22 +6,33 @@
     <title>嵌入直播画面并添加截图功能</title>
 </head>
 <body>
-    <iframe id="videoFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
+    <video id="liveVideo" src="https://b23.tv/iH6ZT9N" width="800" height="600"></video>
     <button onclick="captureScreenshot()">截图</button>
     <img id="screenshot" alt="Screenshot" style="display: none;">
     
     <script>
+        var videoElement;
+
+        window.onload = function() {
+            videoElement = document.getElementById('liveVideo');
+            videoElement.onloadedmetadata = function() {
+                console.log('视频加载完成');
+            };
+        }
+
         function captureScreenshot() {
-            var videoFrame = document.getElementById('videoFrame');
-            var screenshotImg = document.getElementById('screenshot');
-            var videoElement = videoFrame.contentDocument.getElementsByTagName('video')[0];
-            var canvas = document.createElement('canvas');
-            var context = canvas.getContext('2d');
-            canvas.width = videoElement.offsetWidth;
-            canvas.height = videoElement.offsetHeight;
-            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-            screenshotImg.src = canvas.toDataURL('image/png');
-            screenshotImg.style.display = 'block';
+            if (videoElement) {
+                var screenshotImg = document.getElementById('screenshot');
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = videoElement.offsetWidth;
+                canvas.height = videoElement.offsetHeight;
+                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                screenshotImg.src = canvas.toDataURL('image/png');
+                screenshotImg.style.display = 'block';
+            } else {
+                alert('视频元素未加载完成，请稍后再试。');
+            }
         }
     </script>
 </body>
