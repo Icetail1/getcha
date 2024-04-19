@@ -14,11 +14,12 @@
         function captureScreenshot() {
             var videoFrame = document.getElementById('videoFrame');
             var screenshotImg = document.getElementById('screenshot');
+            var videoElement = videoFrame.contentDocument.getElementsByTagName('video')[0];
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
-            canvas.width = videoFrame.offsetWidth;
-            canvas.height = videoFrame.offsetHeight;
-            context.drawImage(videoFrame, 0, 0, canvas.width, canvas.height);
+            canvas.width = videoElement.offsetWidth;
+            canvas.height = videoElement.offsetHeight;
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
             screenshotImg.src = canvas.toDataURL('image/png');
             screenshotImg.style.display = 'block';
         }
