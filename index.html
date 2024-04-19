@@ -9,7 +9,23 @@
 <body>
 <h1 id="countdown">Countdown: 00:00:00</h1>
 <button id="startButton">Start Countdown</button>
-
+<iframe id="embeddedFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
+<script>
+window.onload = function() {
+    // 获取嵌入的 iframe 元素
+    const embeddedFrame = document.getElementById('embeddedFrame');
+    
+    // 等待 iframe 加载完成后执行操作
+    embeddedFrame.onload = function() {
+        // 在 iframe 中查找视频元素
+        const videoElement = embeddedFrame.contentDocument.querySelector('video');
+        
+        // 如果找到视频元素，则自动播放
+        if (videoElement) {
+            videoElement.play();
+        }
+    };
+};
 <script src="logic.js"></script>
 </body>
 </html>
