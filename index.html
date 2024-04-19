@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>嵌入直播画面并添加截图功能</title>
+    <title>嵌入RTMP直播画面并添加截图功能</title>
 </head>
 <body>
-    <video id="liveVideo" src="https://b23.tv/iH6ZT9N" width="800" height="600"></video>
+    <video id="liveVideo" width="800" height="600"></video>
     <button onclick="captureScreenshot()">截图</button>
     <img id="screenshot" alt="Screenshot" style="display: none;">
     
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@^1.6.1/dist/flv.min.js"></script>
     <script>
         var videoElement;
 
         window.onload = function() {
-            videoElement = document.getElementById('liveVideo');
-            videoElement.onloadedmetadata = function() {
-                console.log('视频加载完成');
-            };
+            if (flvjs.isSupported()) {
+                var videoUrl = 'https://b23.tv/iH6ZT9N';
+                videoElement = document.getElementById('liveVideo');
+                var flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    url: videoUrl
+                });
+                flvPlayer.attachMediaElement(videoElement);
+                flvPlayer.load();
+                flvPlayer.play();
+            } else {
+                alert('当前浏览器不支持播放 RTMP 视频流。');
+            }
         }
 
         function captureScreenshot() {
