@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>视频播放和截图</title>
-<!-- 引入 dom-to-image 库 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入直播画面并添加截图功能</title>
 </head>
 <body>
-  <!-- 在这里添加一个 iframe 来嵌入视频 -->
-  <iframe id="videoFrame" width="560" height="315" src="https://b23.tv/iH6ZT9N" frameborder="0" allowfullscreen></iframe>
-  <br>
-  <!-- 添加一个按钮用于触发截图功能 -->
-  <button id="screenshotBtn">截图</button>
-  <br>
-  <!-- 用于显示截图的容器 -->
-  <div id="screenshotContainer"></div>
-
-  <script>
-    // 获取 iframe 元素和按钮元素
-    const videoFrame = document.getElementById('videoFrame');
-    const screenshotBtn = document.getElementById('screenshotBtn');
-    const screenshotContainer = document.getElementById('screenshotContainer');
-
-    // 添加按钮点击事件监听器
-    screenshotBtn.addEventListener('click', () => {
-      // 使用 dom-to-image 库截取 iframe 中的内容
-      domtoimage.toPng(videoFrame).then(imgURL => {
-        // 创建一个 img 元素来显示截图
-        const img = document.createElement('img');
-        img.src = imgURL;
-        // 将截图添加到截图容器中
-        screenshotContainer.appendChild(img);
-      }).catch(error => {
-        console.error('截图失败：', error);
-      });
-    });
-  </script>
+    <iframe id="videoFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
+    <button onclick="captureScreenshot()">截图</button>
+    <img id="screenshot" alt="Screenshot" style="display: none;">
+    
+    <script>
+        function captureScreenshot() {
+            var videoFrame = document.getElementById('videoFrame');
+            var screenshotImg = document.getElementById('screenshot');
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.width = videoFrame.offsetWidth;
+            canvas.height = videoFrame.offsetHeight;
+            context.drawImage(videoFrame, 0, 0, canvas.width, canvas.height);
+            screenshotImg.src = canvas.toDataURL('image/png');
+            screenshotImg.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
