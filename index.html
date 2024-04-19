@@ -1,32 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-<title>Countdown Timer</title>
+<title>我永远喜欢ice抽奖！</title>
+<style>
+.hidden {
+    display: none;
+}
+</style>
 </head>
 <body>
-<h1 id="countdown">Countdown: 00:00:00</h1>
+<video controls width="400">
+    <source src="your_video_source.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
 <button id="startButton">Start Countdown</button>
-<iframe id="embeddedFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
+<button id="screenshotButton" class="hidden">Take Screenshot</button>
+
 <script>
+// 获取开始按钮和截图按钮
+const startButton = document.getElementById('startButton');
+const screenshotButton = document.getElementById('screenshotButton');
+
+// 监听开始按钮点击事件
+startButton.addEventListener('click', () => {
+    // 隐藏开始按钮
+    startButton.classList.add('hidden');
+    // 显示截图按钮
+    screenshotButton.classList.remove('hidden');
+
+    // 开始倒计时
+    startCountdown();
+});
+
+// 定义倒计时函数
+function startCountdown() {
+    let countdownTime = 10; // 10秒倒计时
+    const countdownInterval = setInterval(() => {
+        countdownTime--;
+        if (countdownTime === 0) {
+            clearInterval(countdownInterval);
+
+            // 触发截图按钮点击事件
+            screenshotButton.click();
+        }
+    }, 1000);
+}
 window.onload = function() {
     // 获取嵌入的 iframe 元素
     const embeddedFrame = document.getElementById('embeddedFrame');
     
     // 等待 iframe 加载完成后执行操作
     embeddedFrame.onload = function() {
-        // 在 iframe 中查找视频元素
-        const videoElement = embeddedFrame.contentDocument.querySelector('video');
-        
-        // 如果找到视频元素，则自动播放
-        if (videoElement) {
-            videoElement.play();
+        // 获取 iframe 中的文档对象
+        const embeddedDocument = embeddedFrame.contentDocument || embeddedFrame.contentWindow.document;
+
+        // 为截图按钮添加点击事件
+        const screenshotButton = embeddedDocument.getElementById('screenshotButton');
+        screenshotButton.addEventListener('click', () => {
+            takeScreenshot();
+        });
+
+        // 定义截图函数
+        function takeScreenshot() {
+            // 这里是截图的逻辑，可以使用html2canvas库或其他截图技术
+            // 这里简单示例一个警告框表示截图成功
+            alert('Screenshot taken!');
         }
     };
 };
 </script>
-<script src="logic.js"></script>
+
 </body>
 </html>
