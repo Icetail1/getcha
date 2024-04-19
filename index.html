@@ -3,70 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>视频截图示例</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-<style>
-.video-container {
-    position: relative;
-    width: 800px;
-    height: 450px;
-}
-
-.video-player {
-    width: 100%;
-    height: 100%;
-}
-
-.screenshot-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-</style>
+<title>视频播放和截图示例</title>
 </head>
 <body>
-<div class="video-container">
-    <video class="video-player" controls>
-        <source src="https://b23.tv/iH6ZT9N.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    <button class="screenshot-button">截图</button>
-</div>
-
-<div id="screenshotPreview"></div>
+<input type="url" id="videoUrlInput" placeholder="输入视频文件URL">
+<button id="playButton">播放</button>
+<button id="captureButton">截图</button>
+<video id="videoPlayer" controls></video>
+<canvas id="canvas" style="display: none;"></canvas>
 
 <script>
-const screenshotButton = document.querySelector('.screenshot-button');
-const screenshotPreview = document.getElementById('screenshotPreview');
+const videoUrlInput = document.getElementById('videoUrlInput');
+const playButton = document.getElementById('playButton');
+const captureButton = document.getElementById('captureButton');
+const videoPlayer = document.getElementById('videoPlayer');
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
 
-screenshotButton.addEventListener('click', () => {
-    takeScreenshot();
+playButton.addEventListener('click', function() {
+    const videoUrl = videoUrlInput.value.trim();
+    if (videoUrl) {
+        videoPlayer.src = videoUrl;
+        videoPlayer.play();
+    } else {
+        alert('请输入有效的视频文件URL');
+    }
 });
 
-function takeScreenshot() {
-    const videoPlayer = document.querySelector('.video-player');
-
-    // 暂停视频播放
-    videoPlayer.pause();
-
-    // 使用 html2canvas 截取视频播放器的截图
-    html2canvas(videoPlayer).then(canvas => {
-        // 将截图显示在页面中
-        const screenshotImg = document.createElement('img');
-        screenshotImg.src = canvas.toDataURL();
-        screenshotImg.alt = '视频截图';
-        screenshotPreview.innerHTML = ''; // 清空之前的截图
-        screenshotPreview.appendChild(screenshotImg);
-
-        // 恢复视频播放
-        videoPlayer.play();
-    });
-}
+captureButton.addEventListener('click', function() {
+    context.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+    const imgData = canvas.toDataURL('image/png');
+    const img = document.createElement('img');
+    img.src = imgData;
+    document.body.appendChild(img);
+});
 </script>
 </body>
 </html>
