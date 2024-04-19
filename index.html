@@ -26,17 +26,25 @@
 const screenshotButton = document.getElementById('screenshotButton');
 const screenshotContainer = document.getElementById('screenshotContainer');
 const screenshotPreview = document.getElementById('screenshotPreview');
+const embeddedFrame = document.getElementById('embeddedFrame');
 
 // 监听截图按钮点击事件
 screenshotButton.addEventListener('click', () => {
+    pauseVideo();
     takeScreenshot();
 });
 
+// 暂停视频播放
+function pauseVideo() {
+    const embeddedDocument = embeddedFrame.contentDocument || embeddedFrame.contentWindow.document;
+    const videoElement = embeddedDocument.querySelector('video');
+    if (videoElement) {
+        videoElement.pause();
+    }
+}
+
 // 定义截图函数
 function takeScreenshot() {
-    // 获取嵌入的 iframe 元素
-    const embeddedFrame = document.getElementById('embeddedFrame');
-
     // 使用 html2canvas 截取 iframe 中的内容
     html2canvas(embeddedFrame).then(canvas => {
         // 将截图显示在页面中
@@ -45,7 +53,17 @@ function takeScreenshot() {
         screenshotImg.alt = '截图';
         screenshotPreview.appendChild(screenshotImg);
         screenshotContainer.classList.remove('hidden');
+        resumeVideo(); // 截图完成后恢复视频播放
     });
+}
+
+// 恢复视频播放
+function resumeVideo() {
+    const embeddedDocument = embeddedFrame.contentDocument || embeddedFrame.contentWindow.document;
+    const videoElement = embeddedDocument.querySelector('video');
+    if (videoElement) {
+        videoElement.play();
+    }
 }
 </script>
 </body>
