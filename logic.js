@@ -3,7 +3,7 @@ const countdownElement = document.getElementById('countdown');
 const startButton = document.getElementById('startButton');
 
 // 设置倒计时时间（单位：秒）
-const countdownTime = 60; // 60秒倒计时
+const countdownTime = 10; // 60秒倒计时
 
 // 定义倒计时函数
 function startCountdown() {
