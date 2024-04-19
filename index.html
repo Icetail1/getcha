@@ -6,17 +6,15 @@
 <title>视频截图示例</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 <style>
-.iframe-container {
+.video-container {
     position: relative;
     width: 800px;
     height: 450px;
-    overflow: hidden; /* 限制截图范围 */
 }
 
-.iframe-player {
+.video-player {
     width: 100%;
     height: 100%;
-    border: none;
 }
 
 .screenshot-button {
@@ -32,8 +30,11 @@
 </style>
 </head>
 <body>
-<div class="iframe-container">
-    <iframe class="iframe-player" src="https://b23.tv/iH6ZT9N"></iframe>
+<div class="video-container">
+    <video class="video-player" controls>
+        <source src="https://b23.tv/iH6ZT9N.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <button class="screenshot-button">截图</button>
 </div>
 
@@ -48,16 +49,22 @@ screenshotButton.addEventListener('click', () => {
 });
 
 function takeScreenshot() {
-    const iframePlayer = document.querySelector('.iframe-player');
+    const videoPlayer = document.querySelector('.video-player');
 
-    // 使用 html2canvas 截取整个iframe的内容
-    html2canvas(iframePlayer).then(canvas => {
+    // 暂停视频播放
+    videoPlayer.pause();
+
+    // 使用 html2canvas 截取视频播放器的截图
+    html2canvas(videoPlayer).then(canvas => {
         // 将截图显示在页面中
         const screenshotImg = document.createElement('img');
         screenshotImg.src = canvas.toDataURL();
         screenshotImg.alt = '视频截图';
         screenshotPreview.innerHTML = ''; // 清空之前的截图
         screenshotPreview.appendChild(screenshotImg);
+
+        // 恢复视频播放
+        videoPlayer.play();
     });
 }
 </script>
