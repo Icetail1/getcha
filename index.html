@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,30 +6,39 @@
     <title>视频截图</title>
 </head>
 <body>
-    <video id="videoPlayer" src="https://b23.tv/iH6ZT9N" width="560" height="315" controls></video>
+    <iframe id="videoFrame" src="https://b23.tv/iH6ZT9N" width="560" height="315" frameborder="0" allowfullscreen></iframe>
     <br>
     <button id="screenshotButton">截图</button>
     <br>
     <canvas id="screenshotCanvas" width="560" height="315" style="display: none;"></canvas>
 
     <script>
-        const videoPlayer = document.getElementById('videoPlayer');
+        const videoFrame = document.getElementById('videoFrame');
         const screenshotButton = document.getElementById('screenshotButton');
         const screenshotCanvas = document.getElementById('screenshotCanvas');
         const canvasContext = screenshotCanvas.getContext('2d');
 
-        // 截图按钮点击事件
-        screenshotButton.addEventListener('click', () => {
-            // 将视频帧绘制到画布上
-            canvasContext.drawImage(videoPlayer, 0, 0, screenshotCanvas.width, screenshotCanvas.height);
-            // 将画布内容显示在页面上
-            screenshotCanvas.style.display = 'block';
-            // 可以选择将截图下载为图片
-            // const imageData = screenshotCanvas.toDataURL('image/png');
-            // const downloadLink = document.createElement('a');
-            // downloadLink.href = imageData;
-            // downloadLink.download = 'screenshot.png';
-            // downloadLink.click();
+        // 等待 iframe 加载完成
+        videoFrame.addEventListener('load', () => {
+            // 截图按钮点击事件
+            screenshotButton.addEventListener('click', () => {
+                // 获取 iframe 中的视频元素
+                const videoElement = videoFrame.contentDocument.querySelector('video');
+                if (videoElement) {
+                    // 将视频帧绘制到画布上
+                    canvasContext.drawImage(videoElement, 0, 0, screenshotCanvas.width, screenshotCanvas.height);
+                    // 将画布内容显示在页面上
+                    screenshotCanvas.style.display = 'block';
+                    // 可以选择将截图下载为图片
+                    // const imageData = screenshotCanvas.toDataURL('image/png');
+                    // const downloadLink = document.createElement('a');
+                    // downloadLink.href = imageData;
+                    // downloadLink.download = 'screenshot.png';
+                    // downloadLink.click();
+                } else {
+                    console.error('无法获取视频元素');
+                }
+            });
         });
     </script>
 </body>
