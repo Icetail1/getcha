@@ -1,33 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跨域截图iframe中的内容</title>
-</head>
-<body>
-    <iframe id="videoFrame" src="https://b23.tv/iH6ZT9N" width="800" height="600"></iframe>
-    <button onclick="requestScreenshot()">截图</button>
-    <img id="screenshot" alt="Screenshot" style="display: none;">
-
-    <script>
-        var videoFrame = document.getElementById('videoFrame');
-        var screenshotImg = document.getElementById('screenshot');
-
-        function requestScreenshot() {
-            videoFrame.contentWindow.postMessage({ type: 'captureScreenshot' }, '*');
-        }
-
-        window.addEventListener('message', function (event) {
-            if (event.origin !== 'https://b23.tv/iH6ZT9N') {
-                return;
-            }
-
-            if (event.data.type === 'screenshotCaptured') {
-                screenshotImg.src = event.data.screenshot;
-                screenshotImg.style.display = 'block';
-            }
-        });
-    </script>
-</body>
-</html>
+因为晚上可能是AI直播所以提前回答下露娜问题：
+关于人机：很强，目前环境来说JJC挖矿堪比刚出的时候的落月，甚至还要好用，虽然还是怕 BLA
+GVG 目前的GVG防守几乎都能乱沙了，虽然到时候大概率要变天
+关于RTA：
+纯核爆：没有任何推拉条，没有队友辅助，没有群体破甲加伤，不知道为什么有人会觉得这卡能在RTA当纯核爆启动？不想做评论，纯核爆还是在下水道里呆着比较好
+转核：如果能锁到3的话那确实很好，但是目前不可能，那么一选这卡转核我觉得是不如水狼这套的，当然也可能后面配合别的新卡或者技改那到时候再说
+高速阵地：强，或者说这就是高速阵地卡。定位类似lua
+乌龟人：？
+顺便P了个图
